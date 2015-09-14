@@ -28,13 +28,16 @@ class TweetCell: UITableViewCell {
     
     var tweet: Tweet! {
         didSet {
-            var user = tweet!.user
+            var user = tweet.user
             nameLabel.text = user?.name ?? ""
-            screenNameLabel.text = user?.screenname ?? ""
-//            profileImage.setImage
-            
+            var screenName = user?.screenname ?? ""
+            screenNameLabel.text = "@\(screenName)"
+            profileImage.setImageWithURL(NSURL(string: user!.profileImageUrl!))
             contentLabel.text = tweet!.text
-            timeLabel.text = tweet!.createdAtString
+            
+            var formatter = NSDateFormatter()
+            formatter.dateFormat = "MM/dd/yy"
+            timeLabel.text = formatter.stringFromDate(tweet!.createdAt!)
             
         }
     }
@@ -44,6 +47,8 @@ class TweetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         screenNameLabel.preferredMaxLayoutWidth = screenNameLabel.layer.frame.width
+        profileImage.layer.cornerRadius = 3
+        profileImage.clipsToBounds = true
 
         
         if tweet != nil {

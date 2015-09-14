@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidLogout", name: userDidLogoutNotification, object: nil)
         if User.currentUser != nil {
             // go to loggedin screen
-            var vc = storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as! UIViewController
+//            var vc = storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as! UIViewController
+            var vc = storyboard.instantiateViewControllerWithIdentifier("TweetsNavController") as! UINavigationController
             window?.rootViewController = vc
         }
         return true

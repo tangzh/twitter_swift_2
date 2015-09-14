@@ -34,9 +34,12 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @IBAction func logout(sender: AnyObject) {
+        User.currentUser?.logout()
+    }
     
     @IBAction func onLogout(sender: AnyObject) {
-        User.currentUser?.logout()        
+        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -45,19 +48,29 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell") as! TweetCell
-        cell.tweet = tweets?[indexPath.row] ?? nil
-        println("setting cell tweet as \(cell.tweet.createdAt)")
+        cell.tweet = tweets![indexPath.row]
         return cell
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated:true)
+    }
+    
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+//        let navc = segue.destinationViewController as! UINavigationController
+//        let vc = navc.topViewController as? TweetDetailViewController
+        let vc = segue.destinationViewController as? TweetDetailViewController
+        if vc != nil {
+            var indexPath = tableView.indexPathForCell(sender as! TweetCell)!
+            println("get tweet")
+            vc!.tweet = tweets![indexPath.row]
+        }
     }
-    */
+
 
 }
