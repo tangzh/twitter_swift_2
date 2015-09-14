@@ -30,6 +30,8 @@ class TweetDetailViewController: UIViewController {
             screenNameLabel.text = "@\(screenName)"
             profileImageView.setImageWithURL(NSURL(string: user!.profileImageUrl!))
             contentLabel.text = tweet.text
+            retweetsCountLabel.text = "\(tweet.retweetCount!)"
+            favsCountLabel.text = "\(tweet.favCount!)"
             
             var formatter = NSDateFormatter()
             formatter.dateFormat = "MM/dd/yy HH:mm"

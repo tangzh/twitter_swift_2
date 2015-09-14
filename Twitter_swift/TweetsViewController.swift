@@ -10,11 +10,11 @@ import UIKit
 
 class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var tweets: [Tweet]?
+    var refreshControl: UIRefreshControl!
 
     @IBOutlet weak var tableView: UITableView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func refresh(sender:AnyObject) {
         TwitterClient.sharedInstance.homeTimelineWithParams(nil, completion: { (tweets, err) -> Void in
             if err == nil {
                 self.tweets = tweets
@@ -22,8 +22,20 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }else {
                 println("err getting tweets")
             }
-
+            self.refreshControl.endRefreshing()
         })
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControl)
+        refresh(self)
+
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension

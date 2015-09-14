@@ -41,9 +41,7 @@ class TweetCell: UITableViewCell {
             
         }
     }
-    
-//    var user: User?
-    
+        
     override func awakeFromNib() {
         super.awakeFromNib()
         screenNameLabel.preferredMaxLayoutWidth = screenNameLabel.layer.frame.width
