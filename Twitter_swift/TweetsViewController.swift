@@ -8,18 +8,26 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var tweets: [Tweet]?
 
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         TwitterClient.sharedInstance.homeTimelineWithParams(nil, completion: { (tweets, err) -> Void in
-            if err != nil {
+            if err == nil {
                 self.tweets = tweets
+                self.tableView.reloadData()
+            }else {
+                println("err getting tweets")
             }
-        })
 
-        // Do any additional setup after loading the view.
+        })
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 120
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,6 +37,17 @@ class TweetsViewController: UIViewController {
     
     @IBAction func onLogout(sender: AnyObject) {
         User.currentUser?.logout()        
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tweets?.count ?? 0
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell") as! TweetCell
+        cell.tweet = tweets?[indexPath.row] ?? nil
+        println("setting cell tweet as \(cell.tweet.createdAt)")
+        return cell
     }
 
     /*

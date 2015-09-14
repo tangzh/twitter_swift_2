@@ -44,10 +44,6 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         GET("1.1/statuses/home_timeline.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             var tweets = Tweet.tweetsWithArray(response as! [NSDictionary])
             completion(tweets: tweets, err: nil)
-            //                for tweet in tweets {
-            //                    println("text: \(tweet.text) createdAt: \(tweet.createdAtString)")
-            //                }
-            
             }) { (operation: AFHTTPRequestOperation!, err: NSError!) -> Void in
                 println("err getting tweets history")
                 completion(tweets: nil, err: err)
@@ -64,6 +60,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
             
             // fetch the user info
             TwitterClient.sharedInstance.GET("1.1/account/verify_credentials.json", parameters: nil, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                println("get user \(response)")
                 var user = User(dic: response as! NSDictionary)
                 User.currentUser = user
                 self.loginCompletion?(user: user, err: nil)
@@ -72,8 +69,6 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
                     println("err getting current usr")
                     self.loginCompletion?(user: nil, err: err)
             })
-            
-            // fetch the tweets history
             
             
             }, failure: { (err: NSError!) -> Void in
