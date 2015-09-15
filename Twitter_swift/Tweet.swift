@@ -11,6 +11,7 @@ import UIKit
 class Tweet: NSObject {
     var user: User?
     var text: String?
+    var idString: String?
     var createdAtString: String?
     var createdAt: NSDate?
     
@@ -27,6 +28,7 @@ class Tweet: NSObject {
         favCount = dic["favorite_count"] as? Int
         hasRetweeted = dic["retweeted"] as? Bool
         hasFaved = dic["favorited"] as? Bool
+        idString = dic["id_str"] as? String
         
         var formatter = NSDateFormatter()
         formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
@@ -51,5 +53,6 @@ class Tweet: NSObject {
             }
         })
     }
+
     
 }

@@ -250,7 +250,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UW6-dL-DM0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1797" y="1022"/>
+            <point key="canvasLocation" x="1940" y="989"/>
         </scene>
         <!--Tweet Detail View Controller-->
         <scene sceneID="zxZ-Fd-RUk">
@@ -326,11 +326,43 @@
                                     <constraint firstAttribute="height" constant="3" id="De4-1Q-7eM"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cX4-LB-QBO">
+                                <rect key="frame" x="8" y="274" width="16" height="22"/>
+                                <state key="normal" image="reply">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onReply:" destination="tZw-7Q-jUk" eventType="touchUpInside" id="ur3-Qb-ECV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HvJ-rN-YpN">
+                                <rect key="frame" x="74" y="274" width="19" height="22"/>
+                                <state key="normal" image="retweet">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onRetweet:" destination="tZw-7Q-jUk" eventType="touchUpInside" id="C8J-YM-ZHk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAw-IU-Wbp">
+                                <rect key="frame" x="143" y="274" width="16" height="22"/>
+                                <state key="normal" image="favorite">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onFav:" destination="tZw-7Q-jUk" eventType="touchUpInside" id="KaJ-qG-xQz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="HvJ-rN-YpN" firstAttribute="baseline" secondItem="hAw-IU-Wbp" secondAttribute="baseline" id="1go-WO-QMN"/>
                             <constraint firstItem="QqO-3r-G4W" firstAttribute="leading" secondItem="IRd-oK-8vQ" secondAttribute="leading" id="2kH-yc-2dP"/>
                             <constraint firstItem="Hl3-eM-0d8" firstAttribute="baseline" secondItem="UlX-nF-Yim" secondAttribute="baseline" id="4sd-wp-1k2"/>
+                            <constraint firstItem="HvJ-rN-YpN" firstAttribute="baseline" secondItem="cX4-LB-QBO" secondAttribute="baseline" id="50M-SE-T2z"/>
+                            <constraint firstItem="cX4-LB-QBO" firstAttribute="top" secondItem="oWV-V4-jnx" secondAttribute="bottom" constant="10" id="6XZ-zk-zzb"/>
+                            <constraint firstItem="hAw-IU-Wbp" firstAttribute="leading" secondItem="HvJ-rN-YpN" secondAttribute="trailing" constant="50" id="6do-Xy-RQy"/>
+                            <constraint firstItem="HvJ-rN-YpN" firstAttribute="leading" secondItem="cX4-LB-QBO" secondAttribute="trailing" constant="50" id="7t7-cU-qeB"/>
                             <constraint firstItem="Bt9-AX-17M" firstAttribute="top" secondItem="SpN-GG-rOB" secondAttribute="top" constant="78" id="8nY-oT-6EB"/>
                             <constraint firstItem="Hl3-eM-0d8" firstAttribute="leading" secondItem="UlX-nF-Yim" secondAttribute="trailing" constant="10" id="AS0-XT-bWu"/>
                             <constraint firstItem="IRd-oK-8vQ" firstAttribute="top" secondItem="Bt9-AX-17M" secondAttribute="bottom" constant="20" id="LEL-id-ojm"/>
@@ -343,6 +375,7 @@
                             <constraint firstItem="oWV-V4-jnx" firstAttribute="leading" secondItem="SpN-GG-rOB" secondAttribute="leadingMargin" constant="-5" id="Y9g-Wp-tXA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="IRd-oK-8vQ" secondAttribute="trailing" constant="5" id="ZN4-Td-cgy"/>
                             <constraint firstItem="Bt9-AX-17M" firstAttribute="leading" secondItem="IRd-oK-8vQ" secondAttribute="leading" id="kOA-xJ-9vT"/>
+                            <constraint firstItem="cX4-LB-QBO" firstAttribute="leading" secondItem="SpN-GG-rOB" secondAttribute="leading" constant="8" id="neo-4z-3ab"/>
                             <constraint firstItem="QqO-3r-G4W" firstAttribute="top" secondItem="IRd-oK-8vQ" secondAttribute="bottom" constant="10" id="oBO-Mh-Rjx"/>
                             <constraint firstAttribute="trailingMargin" secondItem="oWV-V4-jnx" secondAttribute="trailing" constant="-5" id="oeA-o1-Je5"/>
                             <constraint firstItem="Hl3-eM-0d8" firstAttribute="baseline" secondItem="KT3-1v-ycy" secondAttribute="baseline" id="qhC-4L-7qL"/>
@@ -356,9 +389,11 @@
                     <navigationItem key="navigationItem" id="3n5-nN-9dr"/>
                     <connections>
                         <outlet property="contentLabel" destination="IRd-oK-8vQ" id="HVY-be-YFP"/>
+                        <outlet property="favBtn" destination="hAw-IU-Wbp" id="GLr-fN-Mzp"/>
                         <outlet property="favsCountLabel" destination="KT3-1v-ycy" id="BCO-Gr-hvX"/>
                         <outlet property="nameLabel" destination="bVc-zA-62p" id="luW-nk-nV8"/>
                         <outlet property="profileImageView" destination="Bt9-AX-17M" id="17d-9g-OXl"/>
+                        <outlet property="retweetBtn" destination="HvJ-rN-YpN" id="SeJ-Dw-bAM"/>
                         <outlet property="retweetsCountLabel" destination="UlX-nF-Yim" id="4JH-Hj-7fW"/>
                         <outlet property="screenNameLabel" destination="Bju-ci-B56" id="Zmy-gO-j4n"/>
                         <outlet property="timeLabel" destination="QqO-3r-G4W" id="DB6-he-3qw"/>
@@ -402,7 +437,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvU-tX-ZN0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1265" y="1022"/>
+            <point key="canvasLocation" x="1314" y="1069"/>
         </scene>
     </scenes>
     <resources>

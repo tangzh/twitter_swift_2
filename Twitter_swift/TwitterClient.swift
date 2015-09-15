@@ -61,6 +61,36 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         }
     }
     
+    func replyTweet(status: NSString, repliedTweetId: String?,  params: NSDictionary?, completion: (tweet: Tweet?, err: NSError?)-> Void) {
+        POST("1.1/statuses/update.json?status=\(status)&in_reply_to_status_id=\(repliedTweetId!)", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            var tweet = Tweet(dic: response as! NSDictionary)
+            completion(tweet: tweet, err: nil)
+            }) { (operation: AFHTTPRequestOperation!, err: NSError!) -> Void in
+                println("err replying tweet \(err)")
+                completion(tweet: nil, err: err)
+        }
+    }
+    
+    func likeTweet(likedTweetId: String?, params: NSDictionary?, completion: (tweet: Tweet?, err: NSError?)-> Void) {
+        POST("1.1/favorites/create.json?id=\(likedTweetId!)", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            var tweet = Tweet(dic: response as! NSDictionary)
+            completion(tweet: tweet, err: nil)
+            }) { (operation: AFHTTPRequestOperation!, err: NSError!) -> Void in
+                println("err liking tweet \(err)")
+                completion(tweet: nil, err: err)
+        }
+    }
+    
+    func retweetTweet(retweetedTweetId: String?, params: NSDictionary?, completion: (tweet: Tweet?, err: NSError?)-> Void) {
+        POST("1.1/statuses/retweet/\(retweetedTweetId!).json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            var tweet = Tweet(dic: response as! NSDictionary)
+            completion(tweet: tweet, err: nil)
+            }) { (operation: AFHTTPRequestOperation!, err: NSError!) -> Void in
+                println("err retweeting tweet \(err)")
+                completion(tweet: nil, err: err)
+        }
+    }
+    
     func openURL(url: NSURL) {
         
         fetchAccessTokenWithPath("oauth/access_token", method: "POST", requestToken: BDBOAuth1Credential(queryString: url.query), success: { (accessToken:BDBOAuth1Credential!) -> Void in
