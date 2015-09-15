@@ -8,12 +8,18 @@
 
 import UIKit
 
+protocol ComposeTweetViewControllerDelegate{
+    func composeTweetViewControllerNewTweet(vc: ComposeTweetViewController, newTweet tweet: Tweet)
+}
+
 class ComposeTweetViewController: UIViewController {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var screenNameLabel: UILabel!    
     @IBOutlet weak var composeField: UITextField!
+    
+    var delegate: ComposeTweetViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +46,15 @@ class ComposeTweetViewController: UIViewController {
     }
     
     @IBAction func onTweet(sender: AnyObject) {
-        Tweet.createTweet(composeField.text)
-        dismissViewControllerAnimated(true, completion: nil)        
+        TwitterClient.sharedInstance.createTweet(composeField.text, params: nil, completion: { (tweet, err) -> Void in
+            if err == nil {
+                println("created tweet ")
+                self.delegate?.composeTweetViewControllerNewTweet(self, newTweet: tweet!)
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }else {
+                println("something wrong creating tweet : \(err)")
+            }
+        })
     }
 
     /*

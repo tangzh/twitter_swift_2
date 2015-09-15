@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCellDelegate, ComposeTweetViewControllerDelegate{
     var tweets: [Tweet]?
     var refreshControl: UIRefreshControl!
 
@@ -50,10 +50,6 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         User.currentUser?.logout()
     }
     
-    @IBAction func onLogout(sender: AnyObject) {
-        
-    }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets?.count ?? 0
     }
@@ -61,12 +57,33 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell") as! TweetCell
         cell.tweet = tweets![indexPath.row]
+        cell.tweetCellDelegate = self
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated:true)
     }
+    
+    func tweetCell(tweetCell: TweetCell) {
+        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let navVC = storyboard.instantiateViewControllerWithIdentifier("ReplyTweetNavController") as? UINavigationController
+        let vc = navVC?.topViewController as? ReplyTweetViewController
+        vc?.repliedTweet = tweetCell.tweet
+        presentViewController(navVC!, animated: true, completion: nil)
+    }
+    
+    func updateTweet(tweetCell: TweetCell, didChangedTweet tweet: Tweet) {
+        let indexPath = tableView.indexPathForCell(tweetCell)
+        tweets![indexPath!.row] = tweet
+        tableView.reloadData()
+    }
+    
+    func composeTweetViewControllerNewTweet(vc: ComposeTweetViewController, newTweet tweet: Tweet) {
+        tweets?.insert(tweet, atIndex: 0)
+        tableView.reloadData()
+    }
+
     
 
     // MARK: - Navigation
@@ -82,20 +99,14 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         if segue.identifier != nil {
-            println("\(segue.identifier)")
-            println("\(sender?.superview)")
-            
+            if let id = segue.identifier {
+                let navc = segue.destinationViewController as? UINavigationController
+                let vc = navc?.topViewController as? ComposeTweetViewController
+                if let vc = vc {
+                    vc.delegate = self
+                }
+            }
         }
-        
-        
-//        if segue.identifier != nil {
-//            if segue.identifier! == "composeTweet" {
-//                if let vc = segue.destinationViewController as? ComposeTweetViewController {
-////                    vc.tweet
-//                }
-//            
-//            }
-//        }
     }
 
 

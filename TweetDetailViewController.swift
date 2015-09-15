@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class TweetDetailViewController: UIViewController {
     
     @IBOutlet weak var profileImageView: UIImageView!
@@ -27,8 +28,6 @@ class TweetDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTweetData()
-
-        // Do any additional setup after loading the view.
     }
     
     func loadTweetData() {
@@ -62,7 +61,6 @@ class TweetDetailViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func onReply(sender: AnyObject) {
@@ -72,7 +70,6 @@ class TweetDetailViewController: UIViewController {
     @IBAction func onRetweet(sender: AnyObject) {
         if let tweet = tweet {
             if tweet.hasRetweeted != nil && !tweet.hasRetweeted! {
-//                Tweet.retweetTweet(tweet.idString)
                 TwitterClient.sharedInstance.retweetTweet(tweet.idString, params: nil) { (tweet, err) -> Void in
                     if err == nil {
                         println("retweeted tweet ")
@@ -90,7 +87,6 @@ class TweetDetailViewController: UIViewController {
     @IBAction func onFav(sender: AnyObject) {
         if let tweet = tweet {
             if tweet.hasFaved != nil && !tweet.hasFaved! {
-//                Tweet.likeTweet(tweet.idString)
                 TwitterClient.sharedInstance.likeTweet(tweet.idString, params: nil) { (tweet, err) -> Void in
                     if err == nil {
                         println("liked tweet ")
@@ -107,14 +103,21 @@ class TweetDetailViewController: UIViewController {
     
     
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let identifier = segue.identifier {
+            if identifier == "replyTweet" {
+                let navc = segue.destinationViewController as? UINavigationController
+                let vc = navc?.topViewController as? ReplyTweetViewController
+                vc?.repliedTweet = tweet
+            }
+        }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+
 
 }

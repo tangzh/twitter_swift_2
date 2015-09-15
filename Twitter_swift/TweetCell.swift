@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol TweetCellDelegate: class{
+    func tweetCell(tweetCell: TweetCell)
+    func updateTweet(tweetCell: TweetCell, didChangedTweet tweet: Tweet)
+}
+
 class TweetCell: UITableViewCell {
     
     
@@ -16,14 +21,48 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var screenNameLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var replyBtn: UIButton!
+    @IBOutlet weak var retweetBtn: UIButton!
+    @IBOutlet weak var favBtn: UIButton!
+    
+    var tweetCellDelegate: TweetCellDelegate?
     
     @IBAction func onReply(sender: AnyObject) {
+        tweetCellDelegate?.tweetCell(self)
     }
     
     @IBAction func onRetweet(sender: AnyObject) {
+        if let tweet = tweet {
+            if tweet.hasRetweeted != nil && !tweet.hasRetweeted! {
+                TwitterClient.sharedInstance.retweetTweet(tweet.idString, params: nil) { (tweet, err) -> Void in
+                    if err == nil {
+                        println("retweeted tweet ")
+                        self.tweet!.hasRetweeted = true
+                        self.tweetCellDelegate?.updateTweet(self, didChangedTweet: self.tweet!)
+                    }else {
+                        println("something wrong retweeting tweet : \(err)")
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func onFav(sender: AnyObject) {
+        if let tweet = tweet {
+            if tweet.hasFaved != nil && !tweet.hasFaved! {
+                TwitterClient.sharedInstance.likeTweet(tweet.idString, params: nil) { (tweet, err) -> Void in
+                    if err == nil {
+                        println("liked tweet ")
+                        self.tweet! = tweet!
+                        self.tweetCellDelegate?.updateTweet(self, didChangedTweet: tweet!)
+
+                    }else {
+                        println("something wrong liking tweet : \(err)")
+                    }
+                }
+            }
+        }
+        
     }
     
     var tweet: Tweet! {
@@ -39,6 +78,18 @@ class TweetCell: UITableViewCell {
             formatter.dateFormat = "MM/dd/yy"
             timeLabel.text = formatter.stringFromDate(tweet!.createdAt!)
             
+            if (tweet.hasFaved != nil && tweet.hasFaved!) {
+                favBtn.setImage(UIImage(named: "favorite_on.png"), forState: .Normal)
+            }else {
+                favBtn.setImage(UIImage(named: "favorite.png"), forState: .Normal)
+            }
+
+            if (tweet.hasRetweeted != nil && tweet.hasRetweeted!) {
+                retweetBtn.setImage(UIImage(named: "retweet_on.png"), forState: .Normal)
+            }else {
+                retweetBtn.setImage(UIImage(named: "retweet.png"), forState: .Normal)
+            }
+            
         }
     }
         
@@ -52,7 +103,6 @@ class TweetCell: UITableViewCell {
         if tweet != nil {
             
         }
-        // Initialization code
     }
     
     override func layoutSubviews() {

@@ -92,7 +92,6 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     func openURL(url: NSURL) {
-        
         fetchAccessTokenWithPath("oauth/access_token", method: "POST", requestToken: BDBOAuth1Credential(queryString: url.query), success: { (accessToken:BDBOAuth1Credential!) -> Void in
             println("get access token")
             
