@@ -46,7 +46,7 @@ class ComposeTweetViewController: UIViewController {
     }
     
     @IBAction func onTweet(sender: AnyObject) {
-        TwitterClient.sharedInstance.createTweet(composeField.text, params: nil, completion: { (tweet, err) -> Void in
+        TwitterClient.sharedInstance.createTweet(["status": composeField.text], completion: { (tweet, err) -> Void in
             if err == nil {
                 println("created tweet ")
                 self.delegate?.composeTweetViewControllerNewTweet(self, newTweet: tweet!)

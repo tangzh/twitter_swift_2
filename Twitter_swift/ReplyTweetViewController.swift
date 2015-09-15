@@ -35,7 +35,7 @@ class ReplyTweetViewController: UIViewController {
     
     @IBAction func onReply(sender: AnyObject) {
         if let repliedTweet = repliedTweet {
-            TwitterClient.sharedInstance.replyTweet(replyTextField.text, repliedTweetId: repliedTweet.idString, params: nil, completion: { (tweet, err) -> Void in
+            TwitterClient.sharedInstance.replyTweet(["status": replyTextField.text, "in_reply_to_status_id": "\(repliedTweet.idString!)"], completion: { (tweet, err) -> Void in
                 if err == nil {
                     println("replied tweet")
                 }else {

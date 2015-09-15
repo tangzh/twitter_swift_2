@@ -52,8 +52,8 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
     }
     
-    func createTweet(status: NSString, params: NSDictionary?, completion: (tweet: Tweet?, err: NSError?)-> Void) {
-        POST("1.1/statuses/update.json?status=\(status)", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+    func createTweet(params: NSDictionary?, completion: (tweet: Tweet?, err: NSError?)-> Void) {
+        POST("1.1/statuses/update.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             var tweet = Tweet(dic: response as! NSDictionary)
             completion(tweet: tweet, err: nil)
             }) { (operation: AFHTTPRequestOperation!, err: NSError!) -> Void in
@@ -61,8 +61,8 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         }
     }
     
-    func replyTweet(status: NSString, repliedTweetId: String?,  params: NSDictionary?, completion: (tweet: Tweet?, err: NSError?)-> Void) {
-        POST("1.1/statuses/update.json?status=\(status)&in_reply_to_status_id=\(repliedTweetId!)", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+    func replyTweet(params: NSDictionary?, completion: (tweet: Tweet?, err: NSError?)-> Void) {
+        POST("1.1/statuses/update.json", parameters: params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
             var tweet = Tweet(dic: response as! NSDictionary)
             completion(tweet: tweet, err: nil)
             }) { (operation: AFHTTPRequestOperation!, err: NSError!) -> Void in
