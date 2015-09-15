@@ -43,16 +43,4 @@ class Tweet: NSObject {
         }
         return tweets
     }
-    
-    class func createTweet(status: NSString) {
-        TwitterClient.sharedInstance.createTweet(status, params: nil, completion: { (tweet, err) -> Void in
-            if err == nil {
-                println("created tweet ")
-            }else {
-                println("something wrong creating tweet : \(err)")
-            }
-        })
-    }
-
-    
 }
