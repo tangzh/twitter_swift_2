@@ -16,8 +16,8 @@ class ComposeTweetViewController: UIViewController {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var screenNameLabel: UILabel!    
-    @IBOutlet weak var composeField: UITextField!
+    @IBOutlet weak var screenNameLabel: UILabel!
+    @IBOutlet weak var composeField: UITextView!
     
     var delegate: ComposeTweetViewControllerDelegate?
     

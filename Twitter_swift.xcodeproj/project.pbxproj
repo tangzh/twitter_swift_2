@@ -95,6 +95,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B56FB4811BACD782001EACD0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B5AA9B871BA68C21001CF465 /* TweetCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		B56FB4821BACD788001EACD0 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B5AA9B5C1BA5FA8F001CF465 /* ViewController.swift */,
+				B5AA9B851BA64957001CF465 /* TweetsViewController.swift */,
+				B5AA9B891BA69EDD001CF465 /* TweetDetailViewController.swift */,
+				B5AA9B8B1BA6AF6E001CF465 /* ComposeTweetViewController.swift */,
+				B56FB44F1BA7CD3B001EACD0 /* ReplyTweetViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		B5AA9B4C1BA5FA8E001CF465 = {
 			isa = PBXGroup;
 			children = (
@@ -118,14 +138,10 @@
 		B5AA9B571BA5FA8F001CF465 /* Twitter_swift */ = {
 			isa = PBXGroup;
 			children = (
+				B56FB4821BACD788001EACD0 /* Controllers */,
+				B56FB4811BACD782001EACD0 /* Views */,
 				B5AA9B801BA6395B001CF465 /* Models */,
 				B5AA9B7D1BA5FC6D001CF465 /* API */,
-				B5AA9B5C1BA5FA8F001CF465 /* ViewController.swift */,
-				B5AA9B851BA64957001CF465 /* TweetsViewController.swift */,
-				B5AA9B871BA68C21001CF465 /* TweetCell.swift */,
-				B5AA9B891BA69EDD001CF465 /* TweetDetailViewController.swift */,
-				B5AA9B8B1BA6AF6E001CF465 /* ComposeTweetViewController.swift */,
-				B56FB44F1BA7CD3B001EACD0 /* ReplyTweetViewController.swift */,
 				B5AA9B5E1BA5FA8F001CF465 /* Main.storyboard */,
 				B5AA9B5A1BA5FA8F001CF465 /* AppDelegate.swift */,
 				B5AA9B611BA5FA8F001CF465 /* Images.xcassets */,

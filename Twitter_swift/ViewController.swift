@@ -27,6 +27,7 @@ class ViewController: UIViewController {
                 self.performSegueWithIdentifier("loginSegue", sender: self)
             } else {
                 // display err
+                UIAlertView(title: "Error", message: "There is something wrong to log in.", delegate: nil, cancelButtonTitle: "OK").show()
             }
         }
         
