@@ -11,6 +11,9 @@ import UIKit
 class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCellDelegate, ComposeTweetViewControllerDelegate{
     var tweets: [Tweet]?
     var refreshControl: UIRefreshControl!
+    
+    var tableViewOriginalCenter: CGPoint!
+    var viewSize: CGSize!
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -49,6 +52,27 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func logout(sender: AnyObject) {
         User.currentUser?.logout()
     }
+    
+    @IBAction func onPanned(sender: UIPanGestureRecognizer) {
+        let panGestureRecognizer = sender
+        let translation = sender.translationInView(tableView)
+        var point = panGestureRecognizer.locationInView(view)
+        var velocity = panGestureRecognizer.velocityInView(view)
+        
+        if panGestureRecognizer.state == UIGestureRecognizerState.Began {
+            tableViewOriginalCenter = tableView.center
+        } else if panGestureRecognizer.state == UIGestureRecognizerState.Changed {
+            tableView.center = CGPoint(x: tableViewOriginalCenter.x + translation.x, y: tableViewOriginalCenter.y)
+        } else if panGestureRecognizer.state == UIGestureRecognizerState.Ended {
+            if velocity.x > 0 { // it is moving right
+                tableView.center = CGPoint(x: tableViewOriginalCenter.x + view.bounds.width/2 , y: tableViewOriginalCenter.y)
+            }else {
+                tableView.center = CGPoint(x: tableViewOriginalCenter.x - view.bounds.width/2, y: tableViewOriginalCenter.y)
+            }
+        }
+        
+    }
+    
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets?.count ?? 0

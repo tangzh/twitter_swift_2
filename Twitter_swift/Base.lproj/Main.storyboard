@@ -50,12 +50,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fB4-mu-jzY">
-                                <rect key="frame" x="16" y="20" width="49" height="30"/>
-                                <state key="normal" title="Logout">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZmI-Ha-sR7">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="128" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="S7O-BH-5S1">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -94,7 +92,7 @@
                                                         <action selector="onReply:" destination="C02-4m-4AR" eventType="touchUpInside" id="aTj-Gm-c8D"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWW-8C-hv0">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWW-8C-hv0">
                                                     <rect key="frame" x="129" y="87" width="19" height="22"/>
                                                     <state key="normal" image="retweet">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -103,7 +101,7 @@
                                                         <action selector="onRetweet:" destination="C02-4m-4AR" eventType="touchUpInside" id="FFu-2L-XEM"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTg-xw-Wq6">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTg-xw-Wq6">
                                                     <rect key="frame" x="168" y="87" width="16" height="22"/>
                                                     <state key="normal" image="favorite">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -163,6 +161,16 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="ZmI-Ha-sR7" firstAttribute="leading" secondItem="GIu-UU-Jhj" secondAttribute="leading" id="0js-GE-wM6"/>
+                            <constraint firstItem="2OW-Om-f4D" firstAttribute="top" secondItem="ZmI-Ha-sR7" secondAttribute="bottom" id="5fY-Wv-7Og"/>
+                            <constraint firstItem="ZmI-Ha-sR7" firstAttribute="top" secondItem="JaR-rf-LI3" secondAttribute="bottom" id="rFv-Vz-DYb"/>
+                            <constraint firstAttribute="trailing" secondItem="ZmI-Ha-sR7" secondAttribute="trailing" id="uba-wq-pWU"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Nqn-U0-ung" appends="YES" id="T4U-bn-akX"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="qfV-wf-Hxi">
                         <barButtonItem key="leftBarButtonItem" title="Sign out" id="jCL-VO-siy">
@@ -181,6 +189,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmK-0L-lyl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="Nqn-U0-ung">
+                    <connections>
+                        <action selector="onPanned:" destination="pSL-ow-Iht" id="QqD-i2-wsY"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1169" y="283"/>
         </scene>
