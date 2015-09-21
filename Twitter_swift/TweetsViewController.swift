@@ -11,23 +11,62 @@ import UIKit
 class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCellDelegate, ComposeTweetViewControllerDelegate{
     var tweets: [Tweet]?
     var refreshControl: UIRefreshControl!
+    var profileViewUser: User?
+    
+    @IBOutlet weak var backgroundImage: UIImageView!   
+    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var screenNameLabel: UILabel!
+    @IBOutlet weak var tweetsNum: UILabel!    
+    @IBOutlet weak var followingNum: UILabel!
+    @IBOutlet weak var followersNum: UILabel!
     
     var tableViewOriginalCenter: CGPoint!
     var viewSize: CGSize!
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var headerView: UIView!
     
     func refresh(sender:AnyObject) {
-        TwitterClient.sharedInstance.homeTimelineWithParams(nil, completion: { (tweets, err) -> Void in
-            if err == nil {
-                self.tweets = tweets
-                self.tableView.reloadData()
-            }else {
-                println("err getting tweets")
-            }
-            self.refreshControl.endRefreshing()
-        })
+        if profileViewUser == nil {
+            TwitterClient.sharedInstance.homeTimelineWithParams(nil, completion: { (tweets, err) -> Void in
+                if err == nil {
+                    self.tweets = tweets
+                    self.tableView.reloadData()
+                }else {
+                    println("err getting tweets")
+                }
+                self.refreshControl.endRefreshing()
+            })
+        }else {
+            TwitterClient.sharedInstance.userTimeline(["screen_name": profileViewUser!.screenname!], completion: { (tweets, err) -> Void in
+                if err == nil {
+                    self.tweets = tweets
+                    self.tableView.reloadData()
+                }else {
+                    println("err getting tweets")
+                }
+                self.refreshControl.endRefreshing()
+            })
+        }
         
+        
+    }
+    
+    func loadHeaderView() {
+        if let user = profileViewUser {
+            headerView.frame = CGRectMake(0 , 0, self.view.frame.width, 250)
+            headerView.alpha = 1
+            nameLabel.text = user.name ?? ""
+            followingNum.text = "\(user.followingNum!)"
+            followersNum.text = "\(user.followersNum!)"
+            tweetsNum.text = "\(user.tweetsNum!)"
+            var screenName = user.screenname ?? ""
+            screenNameLabel.text = "@\(screenName)"
+            profileImage.setImageWithURL(NSURL(string: user.profileImageUrl!))
+            backgroundImage.setImageWithURL(NSURL(string: user.backgroundImageUrl!))
+            
+        }
     }
     
     override func viewDidLoad() {
@@ -43,6 +82,14 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
+        
+        if profileViewUser != nil {
+            loadHeaderView()
+        }else {
+            headerView.frame = CGRectMake(0 , 0, self.view.frame.width, 0)
+            headerView.alpha = 0
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -89,6 +136,9 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.deselectRowAtIndexPath(indexPath, animated:true)
     }
     
+    
+    // MARK: - Delegate
+    
     func tweetCell(tweetCell: TweetCell) {
         let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         let navVC = storyboard.instantiateViewControllerWithIdentifier("ReplyTweetNavController") as? UINavigationController
@@ -107,8 +157,14 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tweets?.insert(tweet, atIndex: 0)
         tableView.reloadData()
     }
-
     
+    func presentProfileView(tweetCell: TweetCell) {
+        println("should present profile view")
+        profileViewUser = tweetCell.tweet.user
+        loadHeaderView()
+        refresh(self)
+
+    }
 
     // MARK: - Navigation
 

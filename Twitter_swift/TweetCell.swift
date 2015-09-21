@@ -11,6 +11,7 @@ import UIKit
 protocol TweetCellDelegate: class{
     func tweetCell(tweetCell: TweetCell)
     func updateTweet(tweetCell: TweetCell, didChangedTweet tweet: Tweet)
+    func presentProfileView(tweetCell: TweetCell)
 }
 
 class TweetCell: UITableViewCell {
@@ -55,7 +56,7 @@ class TweetCell: UITableViewCell {
                         println("liked tweet ")
                         self.tweet! = tweet!
                         self.tweetCellDelegate?.updateTweet(self, didChangedTweet: tweet!)
-
+                        
                     }else {
                         println("something wrong liking tweet : \(err)")
                     }
@@ -65,6 +66,14 @@ class TweetCell: UITableViewCell {
         
     }
     
+    @IBAction func onTapProfileImgae(sender: AnyObject) {
+//        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+//        let navVC = storyboard.instantiateViewControllerWithIdentifier("TweetsNavController") as? UINavigationController
+//        let vc = navVC?.topViewController as? TweetsViewController
+//        vc?.profileViewUser = nil
+//        presentViewController(navVC!, animated: true, completion: nil)
+        tweetCellDelegate?.presentProfileView(self)        
+    }
     var tweet: Tweet! {
         didSet {
             var user = tweet.user
