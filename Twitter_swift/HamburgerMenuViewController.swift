@@ -28,7 +28,6 @@ class HamburgerMenuViewController: UIViewController {
             }
             
             menuView.addSubview(menuViewController.view)
-            println("add subview menuview \(menuViewController.view)")
         }
     }
     

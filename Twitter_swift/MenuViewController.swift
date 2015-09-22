@@ -15,7 +15,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var viewControllers: [UIViewController] = []
     var tweetsViewController: UINavigationController!
     var profileViewController: UINavigationController!
-    var mentionsViewController: MentionsViewController!
+    var mentionsViewController: UINavigationController!
     
     var titles = ["Homeline", "My Profile", "My Mentions"]
     var hamburgerViewController: HamburgerMenuViewController?
@@ -25,13 +25,22 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         println("load menu view")
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 30
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        mentionsViewController = storyboard.instantiateViewControllerWithIdentifier("MentionsViewController") as! MentionsViewController
+        mentionsViewController = storyboard.instantiateViewControllerWithIdentifier("TweetsNavController") as! UINavigationController
+        let mentionsVC = mentionsViewController.topViewController as! TweetsViewController
+        mentionsVC.isMentionsView = true
+        mentionsVC.title = "Mentions"
+        
         tweetsViewController = storyboard.instantiateViewControllerWithIdentifier("TweetsNavController") as! UINavigationController
+        
         profileViewController = storyboard.instantiateViewControllerWithIdentifier("TweetsNavController") as! UINavigationController
+        profileViewController.title = "Profile"
         let profileVC = profileViewController.topViewController as! TweetsViewController
         profileVC.profileViewUser = User.currentUser
+        profileVC.title = "My Profile"
         
         viewControllers.append(tweetsViewController)
         viewControllers.append(profileViewController)

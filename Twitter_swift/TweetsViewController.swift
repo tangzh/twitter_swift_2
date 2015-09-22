@@ -12,6 +12,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var tweets: [Tweet]?
     var refreshControl: UIRefreshControl!
     var profileViewUser: User?
+    var isMentionsView:Bool = false
     
     @IBOutlet weak var backgroundImage: UIImageView!   
     @IBOutlet weak var profileImage: UIImageView!
@@ -25,29 +26,39 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var headerView: UIView!
     
     func refresh(sender:AnyObject) {
-        if profileViewUser == nil {
-            TwitterClient.sharedInstance.homeTimelineWithParams(nil, completion: { (tweets, err) -> Void in
+        if (!isMentionsView) {
+            if profileViewUser == nil {
+                TwitterClient.sharedInstance.homeTimelineWithParams(nil, completion: { (tweets, err) -> Void in
+                    if err == nil {
+                        self.tweets = tweets
+                        self.tableView.reloadData()
+                    }else {
+                        println("err getting tweets")
+                    }
+                    self.refreshControl.endRefreshing()
+                })
+            }else {
+                TwitterClient.sharedInstance.userTimeline(["screen_name": profileViewUser!.screenname!], completion: { (tweets, err) -> Void in
+                    if err == nil {
+                        self.tweets = tweets
+                        self.tableView.reloadData()
+                    }else {
+                        println("err getting tweets")
+                    }
+                    self.refreshControl.endRefreshing()
+                })
+            }
+        } else {
+            TwitterClient.sharedInstance.getMentions(nil, completion: { (tweets, err) -> Void in
                 if err == nil {
                     self.tweets = tweets
                     self.tableView.reloadData()
                 }else {
-                    println("err getting tweets")
-                }
-                self.refreshControl.endRefreshing()
-            })
-        }else {
-            TwitterClient.sharedInstance.userTimeline(["screen_name": profileViewUser!.screenname!], completion: { (tweets, err) -> Void in
-                if err == nil {
-                    self.tweets = tweets
-                    self.tableView.reloadData()
-                }else {
-                    println("err getting tweets")
+                    println("err getting tweets for mentions")
                 }
                 self.refreshControl.endRefreshing()
             })
         }
-        
-        
     }
     
     func loadHeaderView() {
