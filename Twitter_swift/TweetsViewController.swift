@@ -20,9 +20,6 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tweetsNum: UILabel!    
     @IBOutlet weak var followingNum: UILabel!
     @IBOutlet weak var followersNum: UILabel!
-    
-    var tableViewOriginalCenter: CGPoint!
-    var viewSize: CGSize!
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: UIView!
@@ -65,12 +62,15 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             screenNameLabel.text = "@\(screenName)"
             profileImage.setImageWithURL(NSURL(string: user.profileImageUrl!))
             backgroundImage.setImageWithURL(NSURL(string: user.backgroundImageUrl!))
-            
+        }else {
+            // todo: need to set the nav bar items hidden
+            navigationItem.setHidesBackButton(true, animated: false)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        println("tweets did load")
         
         refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -94,30 +94,9 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     @IBAction func logout(sender: AnyObject) {
         User.currentUser?.logout()
-    }
-    
-    @IBAction func onPanned(sender: UIPanGestureRecognizer) {
-        let panGestureRecognizer = sender
-        let translation = sender.translationInView(tableView)
-        var point = panGestureRecognizer.locationInView(view)
-        var velocity = panGestureRecognizer.velocityInView(view)
-        
-        if panGestureRecognizer.state == UIGestureRecognizerState.Began {
-            tableViewOriginalCenter = tableView.center
-        } else if panGestureRecognizer.state == UIGestureRecognizerState.Changed {
-            tableView.center = CGPoint(x: tableViewOriginalCenter.x + translation.x, y: tableViewOriginalCenter.y)
-        } else if panGestureRecognizer.state == UIGestureRecognizerState.Ended {
-            if velocity.x > 0 { // it is moving right
-                tableView.center = CGPoint(x: tableViewOriginalCenter.x + view.bounds.width/2 , y: tableViewOriginalCenter.y)
-            }else {
-                tableView.center = CGPoint(x: tableViewOriginalCenter.x - view.bounds.width/2, y: tableViewOriginalCenter.y)
-            }
-        }
-        
     }
     
     
@@ -163,7 +142,6 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         profileViewUser = tweetCell.tweet.user
         loadHeaderView()
         refresh(self)
-
     }
 
     // MARK: - Navigation

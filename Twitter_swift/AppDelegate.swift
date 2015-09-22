@@ -17,11 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidLogout", name: userDidLogoutNotification, object: nil)
-        if User.currentUser != nil {
-            // go to loggedin screen
-//            var vc = storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as! UIViewController
-            var vc = storyboard.instantiateViewControllerWithIdentifier("TweetsNavController") as! UINavigationController
-            window?.rootViewController = vc
+        if User.currentUser != nil {            
+            var menuVC = storyboard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
+            var hamburgerViewController = storyboard.instantiateViewControllerWithIdentifier("HamburgerMenuViewController") as! HamburgerMenuViewController
+            
+            menuVC.hamburgerViewController = hamburgerViewController
+            hamburgerViewController.menuViewController = menuVC
+            window?.rootViewController = hamburgerViewController
         }
         UINavigationBar.appearance().barTintColor = UIColor(red: 85, green: 172, blue: 238)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
